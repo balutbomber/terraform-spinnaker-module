@@ -1,5 +1,5 @@
-variable "full_name" {}
 variable "account_id" {}
+variable "full_name" {}
 
 data "aws_iam_policy_document" "this" {
   policy_id = "${var.full_name}-key-default-1"

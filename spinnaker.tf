@@ -13,11 +13,13 @@ module "kms" {
   full_name = local.full_name
 }
 
-# module "iam-codepipeline" {
-#   source     = "./modules/iam-codepipeline"
-#   full_name  = var.full_name
-#   artifacts_bucket_arn = aws_s3_bucket.artifacts.arn
-# }
+module "iam-codepipeline" {
+  source     = "./modules/iam-codepipeline"
+  account_id = data.aws_caller_identity.current.account_id
+  full_name  = local.full_name
+  artifacts_bucket_arn = module.s3.artifacts_bucket_arn
+  aws_kms_key_artifacts_arn = module.kms.aws_kms_key_artifacts_arn
+}
 
 # module "codepipline" {
 #   source     = "./modules/codepipeline"
