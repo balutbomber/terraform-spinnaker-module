@@ -19,9 +19,3 @@ resource "aws_s3_bucket" "spinnaker-artifacts" {
     }
   }
 }
-
-resource "random_string" "random" {
-  length  = 8
-  special = false
-  upper   = false
-}
