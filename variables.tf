@@ -1,8 +1,8 @@
-variable "REGION" {
+variable "region" {
 }
 
-variable "STAGE" {
+variable "stage" {
 }
 
-variable "NAME" {
+variable "name" {
 }

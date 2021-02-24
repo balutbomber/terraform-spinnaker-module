@@ -1,3 +1,3 @@
-REGION = "us-east-1"
-NAME = "spinnaker"
-STAGE = "dev"
+region = "us-east-1"
+name = "spinnaker"
+stage = "dev"
