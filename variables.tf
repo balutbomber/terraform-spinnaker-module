@@ -1,8 +1,4 @@
-variable "region" {
-}
-
-variable "stage" {
-}
-
-variable "name" {
-}
+variable "name" {}
+variable "region" {}
+variable "stage" {}
+variable "github_configuration" {}

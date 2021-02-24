@@ -1,5 +1,3 @@
-variable "full_name" {}
-
 resource "aws_s3_bucket" "codebuild_cache" {
   bucket = "${var.full_name}-codebuild-cache"
   acl    = "private"

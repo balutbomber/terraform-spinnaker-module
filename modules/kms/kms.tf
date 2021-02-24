@@ -1,6 +1,3 @@
-variable "account_id" {}
-variable "full_name" {}
-
 data "aws_iam_policy_document" "this" {
   policy_id = "${var.full_name}-key-default-1"
   statement {
@@ -24,7 +21,7 @@ resource "aws_kms_key" "this" {
   policy      = data.aws_iam_policy_document.this.json
 }
 
-resource "aws_kms_alias" "artifacts" {
+resource "aws_kms_alias" "this" {
   name          = "alias/${var.full_name}-artifacts"
   target_key_id = aws_kms_key.this.key_id
 }

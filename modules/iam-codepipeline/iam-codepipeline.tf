@@ -1,10 +1,6 @@
-variable "account_id" {}
-variable "full_name" {}
-variable "artifacts_bucket_arn" {}
-variable "aws_kms_key_artifacts_arn" {}
-
 locals {
   codepipeline_role_name = join("-", [var.full_name, "codepipline", "role"])
+  codepipeline_role_policy = join("-", [var.full_name, "codepipline", "role", "policy"])
 }
 
 resource "aws_iam_role" "this" {
@@ -34,8 +30,8 @@ data "aws_iam_policy_document" "this" {
       "s3:*",
     ]
     resources = [
-      var.artifacts_bucket_arn,
-      "${var.artifacts_bucket_arn}/*",
+      var.aws_s3_bucket_artifacts_arn,
+      "${var.aws_s3_bucket_artifacts_arn}/*",
     ]
   }
   statement {
@@ -67,7 +63,7 @@ data "aws_iam_policy_document" "this" {
       "kms:Decrypt",
     ]
     resources = [
-      var.aws_kms_key_artifacts_arn,
+      var.aws_kms_key_this_arn,
     ]
   }
   statement {
@@ -98,7 +94,7 @@ data "aws_iam_policy_document" "this" {
 }
 
 resource "aws_iam_role_policy" "this" {
-  name   = "codepipeline-policy"
+  name   = local.codepipeline_role_policy
   role   = aws_iam_role.this.id
   policy = data.aws_iam_policy_document.this.json
 }
