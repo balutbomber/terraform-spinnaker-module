@@ -76,7 +76,7 @@ phases:
   #     - hal config provider kubernetes account add eks-spinnaker --context $CONTEXT
   #     - hal config features edit --artifacts true
   #     - hal config deploy edit --type distributed --account-name eks-spinnaker
-  #     - hal config storage s3 edit --access-key-id AKIAYPPEH5ZWKK7FMFOJ --secret-access-key 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 --bucket spinnakertestotc
+  #     - hal config storage s3 edit --access-key-id XXXXXXX --secret-access-key XXXXXXXXXX --bucket spinnakertestotc
   #     - hal config storage edit --type s3
   #     - hal version list
   #     - export VERSION=1.24.4
