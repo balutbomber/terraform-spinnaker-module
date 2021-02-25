@@ -27,21 +27,39 @@ resource "aws_codepipeline" "this" {
   }
 
   stage {
-    name = "Approve"
+    name = "Build_Cluster"
 
     action {
-      name     = "Approval"
-      category = "Approval"
-      owner    = "AWS"
-      provider = "Manual"
-      version  = "1"
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["build_cluster_output"]
+      version          = "1"
 
-      # configuration {
-      #   CustomData = "A comment"
-      #   ExternalEntityLink = "http://example.com"
-      # }
+      configuration = {
+        ProjectName = var.aws_codebuild_project_this_name
+      }
     }
   }
+
+  # stage {
+  #   name = "Approve"
+
+  #   action {
+  #     name     = "Approval"
+  #     category = "Approval"
+  #     owner    = "AWS"
+  #     provider = "Manual"
+  #     version  = "1"
+
+  #     # configuration {
+  #     #   CustomData = "A comment"
+  #     #   ExternalEntityLink = "http://example.com"
+  #     # }
+  #   }
+  #}
 
   # stage {
   #   name = "Provision EKS"
