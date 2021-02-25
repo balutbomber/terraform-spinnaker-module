@@ -13,7 +13,7 @@ module "kms" {
   full_name = local.full_name
 }
 
-module "iam-codepipeline" {
+module "iam_codepipeline" {
   source     = "./modules/iam-codepipeline"
   account_id = data.aws_caller_identity.current.account_id
   full_name  = local.full_name
