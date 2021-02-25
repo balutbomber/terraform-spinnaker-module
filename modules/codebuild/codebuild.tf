@@ -16,10 +16,14 @@ resource "aws_codebuild_project" "this" {
     type            = "LINUX_CONTAINER"
     privileged_mode = true
 
-    # environment_variable {
-    #   name  = "AWS_ACCOUNT_ID"
-    #   value = var.account_id
-    # }
+    dynamic "environment_variable" {
+      for_each = var.environment_variables
+
+      content {
+        name = environment_variable.key
+        value = environment_variable.value
+      }
+    }
   }
 
   source {

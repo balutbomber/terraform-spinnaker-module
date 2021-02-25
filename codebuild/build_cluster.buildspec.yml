@@ -1,11 +1,11 @@
 version: 0.2
 
-env:
-  variables:
-    STAGE: dev
-    REGION: us-east-1
-    CLUSTER_NAME: eks-spinnaker
-    NAME: spinnaker
+# env:
+#   variables:
+#     STAGE: dev
+#     REGION: us-east-1
+#     CLUSTER_NAME: eks-spinnaker
+#     NAME: spinnaker
 
 phases:
   install:
@@ -31,4 +31,4 @@ phases:
   build:
     commands:
       - echo Create the Amazon EKS cluster for Spinnaker
-      - $STAGE/.terraform/modules/$NAME/scripts/manage_cluster.sh $CLUSTER_NAME $REGION
+      - $stage/.terraform/modules/$NAME/scripts/manage_cluster.sh $cluster_name $AWS_REGION

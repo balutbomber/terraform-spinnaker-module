@@ -1,6 +1,13 @@
 locals {
   full_name = join("-", [var.name, var.stage, random_string.random.result])
   image = "aws/codebuild/standard:5.0"
+
+  codebuild_environment_variables = {
+    cluster_name = local.full_name
+    module_name = var.name
+    region = var.region    
+    stage = var.stage
+  }
 }
 
 module "s3" {
@@ -36,6 +43,7 @@ module "codebuild_terraform_init" {
   aws_iam_role_codebuild_arn = module.iam_codebuild.aws_iam_role_this_arn
   aws_kms_alias_this_arn = module.kms.aws_kms_alias_this_arn
   buildspec = "init.buildspec.yml"
+  environment_variables = local.codebuild_environment_variables
   full_name = join("-", [local.full_name, "init"])
   image = local.image
 }
@@ -45,7 +53,8 @@ module "codebuild_build_cluster" {
   account_id = data.aws_caller_identity.current.account_id
   aws_iam_role_codebuild_arn = module.iam_codebuild.aws_iam_role_this_arn
   aws_kms_alias_this_arn = module.kms.aws_kms_alias_this_arn
-  buildspec = "${var.stage}/.terraform/modules/${var.name}/build/build_cluster.buildspec.yml"
+  buildspec = "${var.stage}/.terraform/modules/${var.name}/codebuild/build_cluster.buildspec.yml"
+  environment_variables = local.codebuild_environment_variables
   full_name = join("-", [local.full_name, "build", "cluster"])
   image = local.image
 }
