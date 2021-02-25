@@ -2,9 +2,11 @@ version: 0.2
 
 env:
   variables:
-    #KUBCONFIG: /tmp/.kube/config
+    #KUBCONFIG: /tmp/.kube/
+    STAGE: dev
     REGION: us-east-1
     CLUSTER_NAME: spinnaker-dev
+    NAME: spinnaker
 
 phases:
   install:
@@ -38,7 +40,7 @@ phases:
   build:
     commands:
       - echo Create the Amazon EKS cluster for Spinnaker
-      - ${var.stage}/.terraform/modules/${var.name}/scripts/manage_cluster.sh $CLUSTER_NAME $REGION
+      - $STAGE/.terraform/modules/$NAME/scripts/manage_cluster.sh $CLUSTER_NAME $REGION
 
       # - aws eks update-kubeconfig --name eks-spinnaker --region us-east-1 --alias eks-spinnaker
 
