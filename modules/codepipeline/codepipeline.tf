@@ -27,7 +27,7 @@ resource "aws_codepipeline" "this" {
   }
 
   stage {
-    name = "Build_Cluster"
+    name = "Init_Terraform"
 
     action {
       name             = "Build"
@@ -35,11 +35,29 @@ resource "aws_codepipeline" "this" {
       owner            = "AWS"
       provider         = "CodeBuild"
       input_artifacts  = ["source_output"]
+      output_artifacts = ["init_terraform_output"]
+      version          = "1"
+
+      configuration = {
+        ProjectName = var.codebuild_terraform_init_aws_codebuild_project_this_name
+      }
+    }
+  }
+
+  stage {
+    name = "Build_Cluster"
+
+    action {
+      name             = "Build"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      input_artifacts  = ["init_terraform_output"]
       output_artifacts = ["build_cluster_output"]
       version          = "1"
 
       configuration = {
-        ProjectName = var.aws_codebuild_project_this_name
+        ProjectName = var.codebuild_build_cluster_aws_codebuild_project_this_name
       }
     }
   }

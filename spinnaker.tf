@@ -30,6 +30,16 @@ module "iam_codebuild" {
   full_name  = local.full_name
 }
 
+module "codebuild_terraform_init" {
+  source     = "./modules/codebuild"
+  account_id = data.aws_caller_identity.current.account_id
+  aws_iam_role_codebuild_arn = module.iam_codebuild.aws_iam_role_this_arn
+  aws_kms_alias_this_arn = module.kms.aws_kms_alias_this_arn
+  buildspec = "init.buildspec.yml"
+  full_name = join("-", [local.full_name, "init"])
+  image = local.image
+}
+
 module "codebuild_build_cluster" {
   source     = "./modules/codebuild"
   account_id = data.aws_caller_identity.current.account_id
@@ -42,7 +52,8 @@ module "codebuild_build_cluster" {
 
 module "codepipeline" {
   source     = "./modules/codepipeline"
-  aws_codebuild_project_this_name = module.codebuild_build_cluster.aws_codebuild_project_this_name
+  codebuild_terraform_init_aws_codebuild_project_this_name = module.codebuild_terraform_init.aws_codebuild_project_this_name
+  codebuild_build_cluster_aws_codebuild_project_this_name = module.codebuild_build_cluster.aws_codebuild_project_this_name
   aws_s3_bucket_artifacts_bucket = module.s3.aws_s3_bucket_artifacts_bucket
   aws_kms_alias_this_arn = module.kms.aws_kms_alias_this_arn
   codepipeline_role_arn = module.iam_codepipeline.aws_iam_role_this_arn
