@@ -35,7 +35,7 @@ module "codebuild_build_cluster" {
   account_id = data.aws_caller_identity.current.account_id
   aws_iam_role_codebuild_arn = module.iam_codebuild.aws_iam_role_this_arn
   aws_kms_alias_this_arn = module.kms.aws_kms_alias_this_arn
-  buildspec = ".terraform/modules/${var.name}/build/build_cluster.buildspec.yml"
+  buildspec = "${var.stage}/.terraform/modules/${var.name}/build/build_cluster.buildspec.yml"
   full_name = join("-", [local.full_name, "build", "cluster"])
   image = local.image
 }
