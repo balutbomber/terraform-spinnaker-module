@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "I AM HERE"
 if eksctl get cluster $1;
 then
     echo "$1 exists, nothing to do"
