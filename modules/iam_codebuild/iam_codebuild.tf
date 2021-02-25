@@ -1,8 +1,9 @@
-#
-# iam roles
-#
+locals {
+  codebuild_role_name = join("-", [var.full_name, "codbuild", "role"])
+}
+
 resource "aws_iam_role" "this" {
-  name = var.full_name
+  name = local.codebuild_role_name
 
   assume_role_policy = <<EOF
 {
