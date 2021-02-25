@@ -21,6 +21,23 @@ module "iam_codepipeline" {
   aws_kms_key_this_arn = module.kms.aws_kms_key_this_arn
 }
 
+module "iam_codecodebuild" {
+  source     = "./modules/iam_codebuild"
+  aws_kms_key_this_arn = module.kms.aws_kms_key_this_arn
+  aws_s3_bucket_artifacts_arn = module.s3.aws_s3_bucket_artifacts_arn
+  aws_s3_bucket_codebuild_cache_arn = module.s3.aws_s3_bucket_codebuild_cache_arn
+  full_name  = local.full_name
+}
+
+# module "codebuild" {
+#   source     = "./modules/codebuild"
+#   aws_s3_bucket_artifacts_bucket = module.s3.aws_s3_bucket_artifacts_bucket
+#   aws_kms_alias_this_arn = module.kms.aws_kms_alias_this_arn
+#   codepipeline_role_arn = module.iam_codepipeline.aws_iam_role_this_arn
+#   full_name = local.full_name
+#   github_configuration = var.github_configuration
+# }
+
 module "codepipeline" {
   source     = "./modules/codepipeline"
   aws_s3_bucket_artifacts_bucket = module.s3.aws_s3_bucket_artifacts_bucket
