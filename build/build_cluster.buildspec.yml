@@ -2,24 +2,15 @@ version: 0.2
 
 env:
   variables:
-    #KUBCONFIG: /tmp/.kube/
     STAGE: dev
     REGION: us-east-1
-    CLUSTER_NAME: spinnaker-dev
+    CLUSTER_NAME: eks-spinnaker
     NAME: spinnaker
 
 phases:
   install:
     commands:
       - echo Install started on `date`
-
-      # - echo Install and configure kubectl
-      # - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-      # - chmod +x ./kubectl
-      # - mv ./kubectl /usr/local/bin/kubectl
-
-      # - echo Verify the installation of kubectl
-      # - kubectl help
 
       - echo Download and install aws-iam-authenticator
       - curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
@@ -41,58 +32,3 @@ phases:
     commands:
       - echo Create the Amazon EKS cluster for Spinnaker
       - $STAGE/.terraform/modules/$NAME/scripts/manage_cluster.sh $CLUSTER_NAME $REGION
-
-      # - aws eks update-kubeconfig --name eks-spinnaker --region us-east-1 --alias eks-spinnaker
-
-      # - echo Enable the Kubernetes provider
-      # - hal config provider kubernetes enable
-
-      # - echo Set the current kubectl context to the cluster for Spinnaker
-      # - kubectl config use-context eks-spinnaker
-
-      # - echo Assign the Kubernetes context to CONTEXT
-      # - CONTEXT=$(kubectl config current-context)
-      # - echo $CONTEXT
-      # - kubectl apply --context $CONTEXT -f https://www.spinnaker.io/downloads/kubernetes/service-account.yml
-      # - TOKEN=$(kubectl get secret --context $CONTEXT $(kubectl get serviceaccount spinnaker-service-account --context $CONTEXT -n spinnaker -o jsonpath='{.secrets[0].name}') -n spinnaker -o jsonpath='{.data.token}' | base64 --decode)
-      # - echo $TOKEN
-      # - kubectl config set-credentials ${CONTEXT}-token-user --token $TOKEN
-
-      # - kubectl config set-context $CONTEXT --user ${CONTEXT}-token-user
-      # - hal config provider kubernetes account add eks-spinnaker --context $CONTEXT
-      # - hal config features edit --artifacts true
-      # - hal config deploy edit --type distributed --account-name eks-spinnaker
-      # - hal config storage s3 edit --access-key-id XXXXXXX --secret-access-key XXXXXXXXXX --bucket spinnakertestotc
-      # - hal config storage edit --type s3
-      # - hal version list
-      # - export VERSION=1.24.4
-      # - hal config version edit --version $VERSION
-
-      # - hal deploy apply
-      # - kubectl -n spinnaker get svc
-
-      # - export NAMESPACE=spinnaker
-      # # Expose Gate and Deck
-      # - kubectl -n ${NAMESPACE} expose service spin-gate --type LoadBalancer --port 80 --target-port 8084 --name spin-gate-public
-
-      # - kubectl -n ${NAMESPACE} expose service spin-deck --type LoadBalancer --port 80 --target-port 9000 --name spin-deck-public
-
-      # - export API_URL=$(kubectl -n $NAMESPACE get svc spin-gate-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-      # - export UI_URL=$(kubectl -n $NAMESPACE get svc spin-deck-public -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-      # # Configure the URL for Gate
-      # - hal config security api edit --override-base-url http://${API_URL}
-
-      # # Configure the URL for Deck
-      # - hal config security ui edit --override-base-url http://${UI_URL}
-
-      # # Apply your changes to Spinnaker
-      # - hal deploy apply
-      # - kubectl -n spinnaker get pods
-      # - kubectl -n spinnaker get svc
-      # - echo Build ended on `date`
-
-  post_build:
-    commands:
-      - echo Build completed on `date`

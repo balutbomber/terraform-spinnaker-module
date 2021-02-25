@@ -2,7 +2,10 @@
 .terraform
 terraform.tfstate
 terraform.tfstate.backup
+*.tfvars
+
 
 # AWS Codebuild
 .codebuild
 codebuild_build.sh
+
